@@ -1,0 +1,26 @@
+table[mat-table] {
+  table-layout: fix;
+  width: 100%;
+}
+
+.mat-column-title {
+  width: 20%;
+  text-align: left;
+}
+
+.mat-column-body {
+  width: auto;
+  text-align: left;
+}
+
+.mat-column-stateName {
+  width: 12%;
+}
+
+.mat-column-categoryName {
+  width: 15%;
+}
+
+th.mat-sort-header-sorted {
+  color: black;
+}
