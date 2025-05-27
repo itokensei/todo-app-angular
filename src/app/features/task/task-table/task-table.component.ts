@@ -22,19 +22,19 @@ export class TaskTable implements AfterViewInit {
   dataSource = new MatTableDataSource(DEMO_DATA);
 
   @ViewChild(MatSort)
-  sort: MatSort = new MatSort;
+  sort: MatSort = new MatSort();
 
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
     this.dataSource.sortingDataAccessor = (item: taskListItem, sortHeaderId: string) => {
       switch (sortHeaderId) {
         case 'stateName':
-          console.log('switch success')
+          console.log('switch success');
           return item.state.name;
         default:
           return (item as any)[sortHeaderId];
       }
-    }
+    };
   }
 
   /** Announce the change in sort state for assistive technology. */

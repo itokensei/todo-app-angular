@@ -6,14 +6,13 @@ import { MatChipsModule } from '@angular/material/chips';
   selector: 'category-chip',
   imports: [CommonModule, MatChipsModule],
   template: `
-    <mat-chip 
-      [ngStyle]="{'background-color': categoryColorHexCode}"
-      [value]="categoryId"
-    >{{categoryName ?? nonCategoryName}}</mat-chip>
+    <mat-chip [ngStyle]="{ 'background-color': categoryColorHexCode }" [value]="categoryId">{{
+      categoryName ?? nonCategoryName
+    }}</mat-chip>
   `,
 })
 export class CategoryChipComponent implements OnInit {
-  nonCategoryName: string ='未分類';
+  nonCategoryName: string = '未分類';
 
   @Input() categoryId: number | undefined;
   @Input() categoryName: string | undefined;
@@ -21,5 +20,5 @@ export class CategoryChipComponent implements OnInit {
 
   constructor() {}
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 }

@@ -1,13 +1,11 @@
 <div class="app-container">
   <header class="app-header">
     <mat-toolbar color="primary">
-      <span>{{title}}｜</span>
+      <span>{{ title }}｜</span>
       <nav mat-tab-nav-bar [tabPanel]="tabPanel" backgroundColor="primary">
         @for (link of navLinks; track link) {
-          <a mat-tab-link
-            (click)="activeLink = link.label"
-            [active]="activeLink ==link.label">
-            {{link.label}}
+          <a mat-tab-link (click)="activeLink = link.label" [active]="activeLink == link.label">
+            {{ link.label }}
           </a>
         }
         <a mat-tab-link disabled>カテゴリ</a>
