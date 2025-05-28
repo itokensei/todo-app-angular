@@ -14,7 +14,7 @@ export class AppComponent {
   title = 'todo-app-angular';
 
   navLinks = [
-    { path: 'task', label: 'タスク' },
+    { path: 'task', label: 'ToDo' },
     // { path: 'category', label: 'カテゴリ' },
   ];
 
