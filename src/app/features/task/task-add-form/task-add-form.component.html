@@ -1,0 +1,32 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <mat-form-field>
+    <mat-label>カテゴリ</mat-label>
+    <mat-select formControlName="categoryId">
+      @for (category of categoryOptions(); track category) {
+        <mat-option value="{{ category.id }}">
+          <category-chip
+            [categoryId]="category.id"
+            [categoryName]="category.name"
+            [categoryColorHexCode]="category.color.hexCode"
+          />
+        </mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>タイトル</mat-label>
+    <input matInput formControlName="title" />
+    <mat-hint>Hint</mat-hint>
+    <mat-error
+      *ngIf="form.get('title')?.invalid && (form.get('title')?.touched || form.get('title')?.dirty)"
+    >
+      <span *ngIf="form.get('title')?.hasError('required')">タイトルは必須です。</span>
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>内容</mat-label>
+    <textarea matInput formControlName="body"></textarea>
+    <mat-hint>Hint</mat-hint>
+  </mat-form-field>
+  <button mat-raised-button color="primary" type="submit" [disabled]="!form.valid">追加する</button>
+</form>
