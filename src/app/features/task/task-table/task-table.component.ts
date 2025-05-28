@@ -1,12 +1,13 @@
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { AfterViewInit, Component, ViewChild, inject } from '@angular/core';
+import { AfterViewInit, Component, ViewChild, effect, inject } from '@angular/core';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 
-import { DEMO_DATA, taskListItem } from '../task-model';
+import { taskListItem } from '../task.model';
 import { CommonModule } from '@angular/common';
 import { CategoryChipComponent } from '../category-chip/category-chip.component';
+import { TaskService } from '../task.service';
 
 @Component({
   selector: 'task-table',
@@ -16,21 +17,27 @@ import { CategoryChipComponent } from '../category-chip/category-chip.component'
   imports: [MatTableModule, MatSortModule, CommonModule, MatChipsModule, CategoryChipComponent],
 })
 export class TaskTable implements AfterViewInit {
+  private taskList = inject(TaskService).allTasks;
   private _liveAnnouncer = inject(LiveAnnouncer);
 
   displayedColumns: string[] = ['stateName', 'categoryName', 'title', 'body'];
-  dataSource = new MatTableDataSource(DEMO_DATA);
+  dataSource = new MatTableDataSource(this.taskList());
+  @ViewChild(MatSort) sort!: MatSort;
 
-  @ViewChild(MatSort)
-  sort: MatSort = new MatSort();
+  constructor() {
+    effect(() => {
+      this.dataSource.data = this.taskList();
+    });
+  }
 
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
+    // MatTableDataSourceはデフォルトで、item内でmatColumnDefと同じkeyを探し、その値でsortする。
+    // item.state.codeでsortするための変更
     this.dataSource.sortingDataAccessor = (item: taskListItem, sortHeaderId: string) => {
       switch (sortHeaderId) {
         case 'stateName':
-          console.log('switch success');
-          return item.state.name;
+          return item.state.code;
         default:
           return (item as any)[sortHeaderId];
       }

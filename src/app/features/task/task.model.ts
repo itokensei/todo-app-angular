@@ -1,3 +1,9 @@
+export interface showTaskResponse {
+  allTasks: taskListItem[];
+  allStatus: status[];
+  allCategories: category[];
+}
+
 export interface taskListItem {
   id: number;
   title: string;
@@ -18,7 +24,12 @@ export interface color {
   hexCode: string;
 }
 
-const url = 'http://localhost:9000'
+export interface category {
+  id: number;
+  name: string;
+  slug: string;
+  color: color;
+}
 
 export const DEMO_DATA: taskListItem[] = [
   {
