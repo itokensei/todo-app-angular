@@ -14,7 +14,7 @@ import {
 import { MatButtonModule } from '@angular/material/button';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import { CommonModule } from '@angular/common';
-import { addTaskRequest, category } from '../task.model';
+import { AddTaskRequest, Category } from '../task.model';
 
 @Component({
   selector: 'task-add-form',
@@ -48,7 +48,7 @@ export class TaskAddFormComponent implements OnInit {
     if (this.form.valid) {
       this.isLoading.set(true);
       this.errorMessage.set(null);
-      const payload: addTaskRequest = {
+      const payload: AddTaskRequest = {
         title: this.form.value.title!,
         body: this.form.value.body!,
         categoryId: Number(this.form.value.categoryId!),
