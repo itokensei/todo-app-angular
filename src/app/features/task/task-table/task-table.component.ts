@@ -32,6 +32,7 @@ export class TaskTable implements AfterViewInit {
 
   displayedColumns: string[] = ['stateName', 'categoryName', 'title', 'body'];
   dataSource = new MatTableDataSource(this.taskList());
+  readonly originalAccessor = this.dataSource.sortingDataAccessor;
   @ViewChild(MatSort) sort!: MatSort;
 
   constructor() {
@@ -49,7 +50,7 @@ export class TaskTable implements AfterViewInit {
         case 'stateName':
           return item.state.code;
         default:
-          return (item as any)[sortHeaderId];
+          return this.originalAccessor(item, sortHeaderId)
       }
     };
   }
