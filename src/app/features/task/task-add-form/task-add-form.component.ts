@@ -13,6 +13,7 @@ import {
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
+import { addTaskRequest, category } from '../task.model';
 
 @Component({
   selector: 'task-add-form',
@@ -46,7 +47,7 @@ export class TaskAddFormComponent implements OnInit {
     if (this.form.valid) {
       this.isLoading.set(true);
       this.errorMessage.set(null);
-      const payload = {
+      const payload: addTaskRequest = {
         title: this.form.value.title!,
         body: this.form.value.body!,
         categoryId: Number(this.form.value.categoryId!),

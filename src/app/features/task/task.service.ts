@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Inject, Injectable, Signal, signal } from '@angular/core';
-import { taskListItem, showTaskResponse, category } from './task.model';
+import { taskListItem, showTaskResponse, category, addTaskRequest } from './task.model';
 import { catchError, finalize, Observable, of, tap, throwError } from 'rxjs';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { API_CONFIG } from '../../configs/api-config.token';
@@ -51,9 +51,9 @@ export class TaskService {
     return this.http.get<showTaskResponse>(this.url);
   }
 
-  add(task: any): Observable<taskListItem> {
+  add(task: addTaskRequest): Observable<taskListItem> {
     return this.http.post<taskListItem>(this.url + 'task', task).pipe(
-      tap((taskItem) => {
+      tap((taskItem: taskListItem) => {
         this._allTasks.update((tasks) => [...tasks, taskItem]);
       }),
       catchError((error: HttpErrorResponse) => {

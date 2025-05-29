@@ -30,3 +30,9 @@ export interface category {
   slug: string;
   color: color;
 }
+
+export interface addTaskRequest {
+  title: string;
+  body: string;
+  categoryId: number;
+}
