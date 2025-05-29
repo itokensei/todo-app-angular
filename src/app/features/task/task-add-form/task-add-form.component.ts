@@ -12,6 +12,7 @@ import {
   FormGroupDirective,
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import { CommonModule } from '@angular/common';
 import { addTaskRequest, category } from '../task.model';
 

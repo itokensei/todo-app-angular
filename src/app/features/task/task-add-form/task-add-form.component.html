@@ -1,4 +1,5 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="form-grid-container">
   <mat-form-field>
     <mat-label>カテゴリ</mat-label>
     <mat-select formControlName="categoryId">
@@ -25,8 +26,9 @@
   </mat-form-field>
   <mat-form-field>
     <mat-label>内容</mat-label>
-    <textarea matInput formControlName="body"></textarea>
+    <textarea matInput formControlName="body" cdkTextareaAutosize cdkAutosizeMinRows="1"></textarea>
     <mat-hint>Hint</mat-hint>
   </mat-form-field>
   <button mat-raised-button color="primary" type="submit" [disabled]="!form.valid">追加する</button>
+  </div>
 </form>
