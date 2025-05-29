@@ -8,16 +8,26 @@ import { taskListItem } from '../task.model';
 import { CommonModule } from '@angular/common';
 import { CategoryChipComponent } from '../category-chip/category-chip.component';
 import { TaskService } from '../task.service';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'task-table',
   styleUrl: 'task-table.component.scss',
   templateUrl: 'task-table.component.html',
   standalone: true,
-  imports: [MatTableModule, MatSortModule, CommonModule, MatChipsModule, CategoryChipComponent],
+  imports: [
+    MatTableModule,
+    MatSortModule,
+    CommonModule,
+    MatChipsModule,
+    CategoryChipComponent,
+    MatProgressSpinnerModule,
+  ],
 })
 export class TaskTable implements AfterViewInit {
-  private taskList = inject(TaskService).allTasks;
+  readonly isLoading = inject(TaskService).isLoading;
+  readonly errorMessage = inject(TaskService).errorMessage;
+  readonly taskList = inject(TaskService).allTasks;
   private _liveAnnouncer = inject(LiveAnnouncer);
 
   displayedColumns: string[] = ['stateName', 'categoryName', 'title', 'body'];
