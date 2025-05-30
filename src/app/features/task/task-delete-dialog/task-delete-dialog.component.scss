@@ -1,0 +1,10 @@
+.task-delete-button-container {
+  display: grid;
+  grid-template-columns: 25% auto auto 25%;
+  gap: 100px;
+  align-items: start;
+}
+
+.task-delete-dialog-container {
+  padding: 20px;
+}
