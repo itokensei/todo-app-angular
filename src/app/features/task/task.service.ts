@@ -1,6 +1,13 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Inject, Injectable, Signal, signal } from '@angular/core';
-import { TaskListItem, ShowTaskResponse, Category, AddTaskRequest, Status } from './task.model';
+import {
+  TaskListItem,
+  ShowTaskResponse,
+  Category,
+  AddTaskRequest,
+  Status,
+  UpdateTaskRequest,
+} from './task.model';
 import { catchError, finalize, Observable, of, tap, throwError } from 'rxjs';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { API_CONFIG } from '../../configs/api-config.token';
@@ -72,6 +79,34 @@ export class TaskService {
           message = error.message;
         }
         return throwError(() => new Error('Failed to add Task: ' + message));
+      })
+    );
+  }
+
+  update(task: UpdateTaskRequest): Observable<TaskListItem> {
+    return this.http.put<TaskListItem>(this.url, task).pipe(
+      tap((updatedTask: TaskListItem) => {
+        this._allTasks.update((tasks) => {
+          const index = tasks.findIndex((task) => task.id === updatedTask.id);
+          if (index > -1) {
+            tasks[index] = updatedTask;
+          }
+          return [...tasks]; // signalの変更をAngularに検知させるために、参照を変える。
+        });
+      }),
+      catchError((error: HttpErrorResponse) => {
+        console.error('TaskUpdateApiError: ', error);
+        let message = '';
+        if (error.error['obj.title']) {
+          message += error.error['obj.title'][0].msg[0];
+        }
+        if (error.error['obj.body']) {
+          message += error.error['obj.body'][0].msg[0];
+        }
+        if (!message) {
+          message = error.message;
+        }
+        return throwError(() => new Error('Failed to update Task: ' + message));
       })
     );
   }

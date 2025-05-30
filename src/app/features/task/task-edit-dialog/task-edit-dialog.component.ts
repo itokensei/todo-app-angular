@@ -9,9 +9,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 
 import { TaskService } from '../task.service';
-import { TaskListItem } from '../task.model';
+import { TaskListItem, UpdateTaskRequest } from '../task.model';
 import { CategoryChipComponent } from '../category-chip/category-chip.component';
-import { Subject } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { MatChipsModule } from '@angular/material/chips';
 
 @Component({
@@ -39,6 +39,7 @@ export class TaskEditDialogComponent implements OnInit {
   private taskService = inject(TaskService);
 
   editForm!: FormGroup;
+  defalutValue!: UpdateTaskRequest
   categoryOptions = this.taskService.allCategories;
   stateOptions = this.taskService.allStatus;
 
@@ -55,6 +56,7 @@ export class TaskEditDialogComponent implements OnInit {
       state: [this.taskItem.state.code, [Validators.required]],
       categoryId: [this.taskItem.categoryId],
     });
+    this.defalutValue = this.editForm.value;
   }
 
   ngOnDestroy(): void {
@@ -64,9 +66,26 @@ export class TaskEditDialogComponent implements OnInit {
 
   onSubmit(): void {
     if (this.editForm.valid) {
-      const request = this.editForm.value;
-      console.log(request);
-      this.dialogRef.close();
+      this.isLoading.set(true);
+      this.errorMessage.set(null);
+      const payload: UpdateTaskRequest = this.editForm.value;
+      this.taskService
+        .update(payload)
+        .pipe(takeUntil(this.notifier$))
+        .subscribe({
+          next: () => {
+            this.editForm.reset();
+          },
+          error: (error) => {
+            this.errorMessage.set(error.message || 'An unxpected error has occured. ');
+            alert(this.errorMessage());
+            this.isLoading.set(false); 
+          },
+          complete: () => {
+            this.isLoading.set(false);
+            this.dialogRef.close();
+          },
+        });
     } else {
       this.editForm.markAllAsTouched();
     }
