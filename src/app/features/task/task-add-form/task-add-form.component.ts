@@ -12,9 +12,9 @@ import {
   FormGroupDirective,
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import { CommonModule } from '@angular/common';
 import { AddTaskRequest, Category } from '../task.model';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'task-add-form',
@@ -32,6 +32,7 @@ import { AddTaskRequest, Category } from '../task.model';
   styleUrl: './task-add-form.component.scss',
 })
 export class TaskAddFormComponent implements OnInit {
+  private notifier$ = new Subject<void>();
   isLoading = signal(false);
   errorMessage = signal<string | null>(null);
   private taskService = inject(TaskService);
@@ -53,7 +54,9 @@ export class TaskAddFormComponent implements OnInit {
         body: this.form.value.body!,
         categoryId: Number(this.form.value.categoryId!),
       };
-      this.taskService.add(payload).subscribe({
+      this.taskService.add(payload)
+      .pipe(takeUntil(this.notifier$)) // http clientは自動的に完了するが、本コンポーネント破棄時の解除処理を入れる。
+      .subscribe({
         next: () => {
           if (this.formDirective) {
             this.formDirective.resetForm();
@@ -76,4 +79,9 @@ export class TaskAddFormComponent implements OnInit {
   }
 
   ngOnInit(): void {}
+
+  ngOnDestroy(): void {
+    this.notifier$.next();
+    this.notifier$.complete();
+  }
 }

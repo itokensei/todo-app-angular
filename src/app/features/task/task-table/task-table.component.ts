@@ -50,7 +50,7 @@ export class TaskTable implements AfterViewInit {
         case 'stateName':
           return item.state.code;
         default:
-          return this.originalAccessor(item, sortHeaderId)
+          return this.originalAccessor(item, sortHeaderId);
       }
     };
   }
