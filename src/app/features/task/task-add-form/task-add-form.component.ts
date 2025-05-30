@@ -54,24 +54,25 @@ export class TaskAddFormComponent implements OnInit {
         body: this.form.value.body!,
         categoryId: Number(this.form.value.categoryId!),
       };
-      this.taskService.add(payload)
-      .pipe(takeUntil(this.notifier$)) // http clientは自動的に完了するが、本コンポーネント破棄時の解除処理を入れる。
-      .subscribe({
-        next: () => {
-          if (this.formDirective) {
-            this.formDirective.resetForm();
-          }
-          this.form.reset();
-        },
-        error: (error) => {
-          this.errorMessage.set(error.message || 'An unxpected error has occured. ');
-          alert(this.errorMessage());
-        },
-        complete: () => {
-          this.isLoading.set(false);
-          console.log(this.isLoading());
-        },
-      });
+      this.taskService
+        .add(payload)
+        .pipe(takeUntil(this.notifier$)) // http clientは自動的に完了するが、本コンポーネント破棄時の解除処理を入れる。
+        .subscribe({
+          next: () => {
+            if (this.formDirective) {
+              this.formDirective.resetForm();
+            }
+            this.form.reset();
+          },
+          error: (error) => {
+            this.errorMessage.set(error.message || 'An unxpected error has occured. ');
+            alert(this.errorMessage());
+          },
+          complete: () => {
+            this.isLoading.set(false);
+            console.log(this.isLoading());
+          },
+        });
     } else {
       console.log('Form is invalid');
       this.form.markAllAsTouched();
