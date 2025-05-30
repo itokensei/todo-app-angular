@@ -8,3 +8,9 @@
 .task-delete-dialog-container {
   padding: 20px;
 }
+
+.deleted-task-container {
+  display: grid;
+  grid-template-columns: auto auto auto 1fr;
+  gap: 10px;
+}

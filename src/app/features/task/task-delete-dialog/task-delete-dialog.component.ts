@@ -5,10 +5,20 @@ import { TaskEditDialogComponent } from '../task-edit-dialog/task-edit-dialog.co
 import { DeleteTaskRequest, TaskListItem } from '../task.model';
 import { TaskService } from '../task.service';
 import { MatButtonModule } from '@angular/material/button';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { CommonModule } from '@angular/common';
+import { CategoryChipComponent } from '../category-chip/category-chip.component';
+import { MatChipsModule } from '@angular/material/chips';
 
 @Component({
   selector: 'task-delete-dialog',
-  imports: [MatButtonModule],
+  imports: [
+    MatButtonModule,
+    MatProgressSpinner,
+    CommonModule,
+    CategoryChipComponent,
+    MatChipsModule,
+  ],
   templateUrl: './task-delete-dialog.component.html',
   styleUrl: './task-delete-dialog.component.scss',
 })
