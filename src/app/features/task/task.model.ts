@@ -44,3 +44,7 @@ export interface UpdateTaskRequest {
   state: number;
   categoryId?: number;
 }
+
+export interface DeleteTaskRequest {
+  id: number;
+}

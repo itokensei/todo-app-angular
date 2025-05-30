@@ -1,8 +1,8 @@
 import { Component, inject, Inject, OnInit, signal } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Subject } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { TaskEditDialogComponent } from '../task-edit-dialog/task-edit-dialog.component';
-import { TaskListItem } from '../task.model';
+import { DeleteTaskRequest, TaskListItem } from '../task.model';
 import { TaskService } from '../task.service';
 import { MatButtonModule } from '@angular/material/button';
 
@@ -30,7 +30,30 @@ export class TaskDeleteDialogComponent implements OnInit {
     this.notifier$.complete();
   }
 
-  onSubmit(): void {}
+  onSubmit(): void {
+    this.isLoading.set(true);
+    this.errorMessage.set(null);
+    const payload: DeleteTaskRequest = { id: this.taskItem.id };
+    this.taskService
+      .delete(payload)
+      .pipe(takeUntil(this.notifier$))
+      .subscribe({
+        next: () => {
+          console.log('next case');
+          this.taskService.deleteFromAllTasksSignal(payload.id);
+        },
+        error: (error) => {
+          this.errorMessage.set(error.message || 'An unxpected error has occured. ');
+          alert(this.errorMessage());
+          this.isLoading.set(false);
+          this.dialogRef.close();
+        },
+        complete: () => {
+          this.isLoading.set(false);
+          this.dialogRef.close();
+        },
+      });
+  }
 
   onCancel(): void {
     this.dialogRef.close();
