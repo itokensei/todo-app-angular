@@ -39,7 +39,7 @@ export class TaskEditDialogComponent implements OnInit {
   private taskService = inject(TaskService);
 
   editForm!: FormGroup;
-  defalutValue!: UpdateTaskRequest
+  defalutValue!: UpdateTaskRequest;
   categoryOptions = this.taskService.allCategories;
   stateOptions = this.taskService.allStatus;
 
@@ -79,7 +79,7 @@ export class TaskEditDialogComponent implements OnInit {
           error: (error) => {
             this.errorMessage.set(error.message || 'An unxpected error has occured. ');
             alert(this.errorMessage());
-            this.isLoading.set(false); 
+            this.isLoading.set(false);
           },
           complete: () => {
             this.isLoading.set(false);
