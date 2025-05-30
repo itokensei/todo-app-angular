@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Inject, Injectable, Signal, signal } from '@angular/core';
-import { TaskListItem, ShowTaskResponse, Category, AddTaskRequest } from './task.model';
+import { TaskListItem, ShowTaskResponse, Category, AddTaskRequest, Status } from './task.model';
 import { catchError, finalize, Observable, of, tap, throwError } from 'rxjs';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { API_CONFIG } from '../../configs/api-config.token';
@@ -21,6 +21,8 @@ export class TaskService {
   allTasks = this._allTasks.asReadonly();
   private _allCategories = signal<Category[]>([]);
   allCategories = this._allCategories.asReadonly();
+  private _allStatus = signal<Status[]>([]);
+  allStatus = this._allStatus.asReadonly();
 
   constructor(
     private http: HttpClient,
@@ -33,6 +35,7 @@ export class TaskService {
           this.errorMessage.set(null);
           this._allTasks.set(response.allTasks || []);
           this._allCategories.set(response.allCategories || []);
+          this._allStatus.set(response.allStatus || []);
         }),
         catchError((error) => {
           console.error('APIからのTaskデータ取得に失敗しました:', error);
