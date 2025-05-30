@@ -1,7 +1,7 @@
-import { HttpClient } from '@angular/common/http';
-import { computed, Inject, Injectable, Signal, signal } from '@angular/core';
-import { taskListItem, showTaskResponse } from './task.model';
-import { catchError, finalize, Observable, of, tap } from 'rxjs';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Inject, Injectable, Signal, signal } from '@angular/core';
+import { TaskListItem, ShowTaskResponse, Category, AddTaskRequest } from './task.model';
+import { catchError, finalize, Observable, of, tap, throwError } from 'rxjs';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { API_CONFIG } from '../../configs/api-config.token';
 import { ApiConfig } from '../../configs/api-config.interface';
@@ -14,10 +14,13 @@ export class TaskService {
     allTasks: [],
     allStatus: [],
     allCategories: [],
-  } as showTaskResponse;
-  private showTaskResponse: Signal<showTaskResponse>;
-  allTasks: Signal<taskListItem[]>;
+  } as ShowTaskResponse;
+  private showTaskResponse: Signal<ShowTaskResponse>;
   private url;
+  private _allTasks = signal<TaskListItem[]>([]);
+  allTasks = this._allTasks.asReadonly();
+  private _allCategories = signal<Category[]>([]);
+  allCategories = this._allCategories.asReadonly();
 
   constructor(
     private http: HttpClient,
@@ -26,8 +29,10 @@ export class TaskService {
     this.url = `${this.config.baseUrl}/${this.config.endpoints.tasks}`;
     this.showTaskResponse = toSignal(
       this.get().pipe(
-        tap(() => {
+        tap((response) => {
           this.errorMessage.set(null);
+          this._allTasks.set(response.allTasks || []);
+          this._allCategories.set(response.allCategories || []);
         }),
         catchError((error) => {
           console.error('APIからのTaskデータ取得に失敗しました:', error);
@@ -40,10 +45,31 @@ export class TaskService {
       ),
       { initialValue: this.initShowTaskResponse }
     );
-    this.allTasks = computed(() => this.showTaskResponse().allTasks);
   }
 
-  private get(): Observable<showTaskResponse> {
-    return this.http.get<showTaskResponse>(this.url);
+  private get(): Observable<ShowTaskResponse> {
+    return this.http.get<ShowTaskResponse>(this.url);
+  }
+
+  add(task: AddTaskRequest): Observable<TaskListItem> {
+    return this.http.post<TaskListItem>(this.url, task).pipe(
+      tap((taskItem: TaskListItem) => {
+        this._allTasks.update((tasks) => [...tasks, taskItem]);
+      }),
+      catchError((error: HttpErrorResponse) => {
+        console.error('TaskAddApiError: ', error);
+        let message = '';
+        if (error.error['obj.title']) {
+          message += error.error['obj.title'][0].msg[0];
+        }
+        if (error.error['obj.body']) {
+          message += error.error['obj.body'][0].msg[0];
+        }
+        if (!message) {
+          message = error.message;
+        }
+        return throwError(() => new Error('Failed to add Task: ' + message));
+      })
+    );
   }
 }

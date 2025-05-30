@@ -4,7 +4,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 
-import { taskListItem } from '../task.model';
+import { TaskListItem } from '../task.model';
 import { CommonModule } from '@angular/common';
 import { CategoryChipComponent } from '../category-chip/category-chip.component';
 import { TaskService } from '../task.service';
@@ -45,12 +45,12 @@ export class TaskTable implements AfterViewInit {
     this.dataSource.sort = this.sort;
     // MatTableDataSourceはデフォルトで、item内でmatColumnDefと同じkeyを探し、その値でsortする。
     // item.state.codeでsortするための変更
-    this.dataSource.sortingDataAccessor = (item: taskListItem, sortHeaderId: string) => {
+    this.dataSource.sortingDataAccessor = (item: TaskListItem, sortHeaderId: string) => {
       switch (sortHeaderId) {
         case 'stateName':
           return item.state.code;
         default:
-          return this.originalAccessor(item, sortHeaderId)
+          return this.originalAccessor(item, sortHeaderId);
       }
     };
   }

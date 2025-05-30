@@ -1,32 +1,38 @@
-export interface showTaskResponse {
-  allTasks: taskListItem[];
-  allStatus: status[];
-  allCategories: category[];
+export interface ShowTaskResponse {
+  allTasks: TaskListItem[];
+  allStatus: Status[];
+  allCategories: Category[];
 }
 
-export interface taskListItem {
+export interface TaskListItem {
   id: number;
   title: string;
   body: string;
-  state: status;
+  state: Status;
   categoryId?: number;
   categoryName?: string;
-  categoryColor?: color;
+  categoryColor?: Color;
 }
 
-export interface status {
+export interface Status {
   code: number;
   name: string;
 }
 
-export interface color {
+export interface Color {
   code: number;
   hexCode: string;
 }
 
-export interface category {
+export interface Category {
   id: number;
   name: string;
   slug: string;
-  color: color;
+  color: Color;
+}
+
+export interface AddTaskRequest {
+  title: string;
+  body: string;
+  categoryId: number;
 }
