@@ -38,7 +38,7 @@
       ></textarea>
       <mat-hint>英数字・ひらがな・カタカナ・漢字（句読点などの記号を除く）</mat-hint>
     </mat-form-field>
-    <button mat-raised-button color="primary" type="submit" [disabled]="!form.valid">
+    <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid || isLoading()">
       追加する
     </button>
   </div>
