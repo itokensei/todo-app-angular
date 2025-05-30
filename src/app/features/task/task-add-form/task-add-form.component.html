@@ -4,7 +4,7 @@
       <mat-label>カテゴリ</mat-label>
       <mat-select formControlName="categoryId">
         @for (category of categoryOptions(); track category) {
-          <mat-option value="{{ category.id }}">
+          <mat-option [value]="category.id">
             <category-chip
               [categoryId]="category.id"
               [categoryName]="category.name"

@@ -62,9 +62,13 @@
             更新する
           </button>
         </div>
-        <div><button mat-raised-button (click)="this.editForm.reset(this.defalutValue)">リセット</button></div>
         <div>
-          <button mat-raised-button (click)="onCancel()" color="warn">キャンセル</button>
+          <button mat-raised-button (click)="onReset()" type="button">
+            リセット
+          </button>
+        </div>
+        <div>
+          <button mat-raised-button (click)="onCancel()" color="warn" type="button">キャンセル</button>
         </div>
       </div>
     </div>

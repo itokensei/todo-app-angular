@@ -34,7 +34,7 @@ export interface Category {
 export interface AddTaskRequest {
   title: string;
   body: string;
-  categoryId: number;
+  categoryId?: number;
 }
 
 export interface UpdateTaskRequest {
@@ -42,5 +42,5 @@ export interface UpdateTaskRequest {
   title: string;
   body: string;
   state: number;
-  categoryId: number;
+  categoryId?: number;
 }

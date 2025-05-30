@@ -94,4 +94,8 @@ export class TaskEditDialogComponent implements OnInit {
   onCancel(): void {
     this.dialogRef.close();
   }
+
+  onReset(): void {
+    this.editForm.reset(this.defalutValue);
+  }
 }
