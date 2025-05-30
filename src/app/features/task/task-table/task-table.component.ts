@@ -12,6 +12,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialog } from '@angular/material/dialog';
 import { TaskEditDialogComponent } from '../task-edit-dialog/task-edit-dialog.component';
 import { MatButtonModule } from '@angular/material/button';
+import { TaskDeleteDialogComponent } from '../task-delete-dialog/task-delete-dialog.component';
 
 @Component({
   selector: 'task-table',
@@ -71,6 +72,13 @@ export class TaskTable implements AfterViewInit {
 
   openEditDialog(taskListItem: TaskListItem): void {
     const dialogRef = this.dialog.open(TaskEditDialogComponent, {
+      width: '60%',
+      data: taskListItem,
+    });
+  }
+
+  openDeleteDialog(taskListItem: TaskListItem): void {
+    const dialogRef = this.dialog.open(TaskDeleteDialogComponent, {
       width: '60%',
       data: taskListItem,
     });

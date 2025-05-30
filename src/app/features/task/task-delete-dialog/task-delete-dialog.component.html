@@ -1,0 +1,48 @@
+<div class="task-delete-dialog-container">
+  <h2>ToDo削除</h2>
+
+  <div class="deleted-task-container">
+    <div class="grid-header">ステータス</div>
+    <div class="grid-header">カテゴリ</div>
+    <div class="grid-header">タイトル</div>
+    <div class="grid-header">内容</div>
+
+    <div>
+      <mat-chip>{{ taskItem.state.name }}</mat-chip>
+    </div>
+    <div>
+      <category-chip
+        [categoryId]="taskItem.categoryId"
+        [categoryName]="taskItem.categoryName"
+        [categoryColorHexCode]="taskItem.categoryColor?.hexCode"
+      ></category-chip>
+    </div>
+    <div>{{ taskItem.title }}</div>
+    <div>{{ taskItem.body }}</div>
+  </div>
+
+  <h3 *ngIf="!isLoading()">本当にこのToDoを削除しますか？</h3>
+  <div class="task-delete-dialog-message">
+    <div *ngIf="isLoading()" class="loader-overlay">
+      <mat-progress-spinner mode="indeterminate" diameter="50"></mat-progress-spinner>
+      <p>ToDoを削除中...</p>
+    </div>
+    <div *ngIf="errorMessage() && !isLoading()" class="error-message-container">
+      <p>{{ errorMessage() }}</p>
+    </div>
+    <div class="task-delete-button-container">
+      <span></span>
+      <button mat-raised-button (click)="onCancel()" type="button">キャンセル</button>
+      <button
+        mat-raised-button
+        (click)="onSubmit()"
+        type="button"
+        color="warn"
+        [disabled]="isLoading()"
+      >
+        実行
+      </button>
+      <span></span>
+    </div>
+  </div>
+</div>

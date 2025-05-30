@@ -7,6 +7,7 @@ import {
   AddTaskRequest,
   Status,
   UpdateTaskRequest,
+  DeleteTaskRequest,
 } from './task.model';
 import { catchError, finalize, Observable, of, tap, throwError } from 'rxjs';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -109,5 +110,18 @@ export class TaskService {
         return throwError(() => new Error('Failed to update Task: ' + message));
       })
     );
+  }
+
+  delete(request: DeleteTaskRequest): Observable<void> {
+    return this.http.delete<void>(this.url, { body: request }); // Not RESTful
+  }
+
+  deleteFromAllTasksSignal(id: number) {
+    this._allTasks.update((tasks) => {
+      if (id > -1) {
+        return tasks.filter((task) => task.id != id);
+      }
+      return [...tasks]; // signalの変更をAngularに検知させるために、参照を変える。
+    });
   }
 }
