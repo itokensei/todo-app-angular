@@ -1,0 +1,10 @@
+.edit-form-grid-container {
+  display: grid;
+  grid-template-columns: 15% 20% 20% 1fr auto;
+  gap: 10px;
+  align-items: start;
+}
+
+.task-edit-dialog-container {
+  padding: 20px;
+}

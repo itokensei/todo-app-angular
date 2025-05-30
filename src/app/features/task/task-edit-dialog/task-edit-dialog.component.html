@@ -1,0 +1,76 @@
+<div class="task-edit-dialog-container">
+  <h2>ToDo更新フォーム</h2>
+  <form [formGroup]="editForm" (ngSubmit)="onSubmit()">
+    <div class="edit-form-grid-container">
+      <mat-form-field>
+        <mat-label>ステータス</mat-label>
+        <mat-select formControlName="state">
+          @for (state of stateOptions(); track state) {
+            <mat-option [value]="state.code">
+              <mat-chip>{{ state.name }}</mat-chip>
+            </mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>カテゴリ</mat-label>
+        <mat-select formControlName="categoryId">
+          @for (category of categoryOptions(); track category) {
+            <mat-option [value]="category.id">
+              <category-chip
+                [categoryId]="category.id"
+                [categoryName]="category.name"
+                [categoryColorHexCode]="category.color.hexCode"
+              />
+            </mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>タイトル</mat-label>
+        <input matInput formControlName="title" />
+        <mat-hint
+          >英数字・ひらがな・カタカナ・漢字（改行および空白、句読点などの記号を除く）</mat-hint
+        >
+        <mat-error
+          *ngIf="
+            editForm.get('title')?.invalid &&
+            (editForm.get('title')?.touched || editForm.get('title')?.dirty)
+          "
+        >
+          <span *ngIf="editForm.get('title')?.hasError('required')">タイトルは必須です。</span>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>内容</mat-label>
+        <textarea
+          matInput
+          formControlName="body"
+          cdkTextareaAutosize
+          cdkAutosizeMinRows="1"
+        ></textarea>
+        <mat-hint>英数字・ひらがな・カタカナ・漢字（句読点などの記号を除く）</mat-hint>
+      </mat-form-field>
+      <div>
+        <div>
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            [disabled]="editForm.invalid || isLoading()"
+          >
+            更新する
+          </button>
+        </div>
+        <div>
+          <button mat-raised-button (click)="onReset()" type="button">リセット</button>
+        </div>
+        <div>
+          <button mat-raised-button (click)="onCancel()" color="warn" type="button">
+            キャンセル
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

@@ -9,6 +9,9 @@ import { CommonModule } from '@angular/common';
 import { CategoryChipComponent } from '../category-chip/category-chip.component';
 import { TaskService } from '../task.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatDialog } from '@angular/material/dialog';
+import { TaskEditDialogComponent } from '../task-edit-dialog/task-edit-dialog.component';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'task-table',
@@ -22,6 +25,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatChipsModule,
     CategoryChipComponent,
     MatProgressSpinnerModule,
+    MatButtonModule,
   ],
 })
 export class TaskTable implements AfterViewInit {
@@ -29,8 +33,9 @@ export class TaskTable implements AfterViewInit {
   readonly errorMessage = inject(TaskService).errorMessage;
   readonly taskList = inject(TaskService).allTasks;
   private _liveAnnouncer = inject(LiveAnnouncer);
+  private dialog = inject(MatDialog);
 
-  displayedColumns: string[] = ['stateName', 'categoryName', 'title', 'body'];
+  displayedColumns: string[] = ['stateName', 'categoryName', 'title', 'body', 'actions'];
   dataSource = new MatTableDataSource(this.taskList());
   readonly originalAccessor = this.dataSource.sortingDataAccessor;
   @ViewChild(MatSort) sort!: MatSort;
@@ -62,5 +67,12 @@ export class TaskTable implements AfterViewInit {
     } else {
       this._liveAnnouncer.announce('Sorting cleared');
     }
+  }
+
+  openEditDialog(taskListItem: TaskListItem): void {
+    const dialogRef = this.dialog.open(TaskEditDialogComponent, {
+      width: '60%',
+      data: taskListItem,
+    });
   }
 }

@@ -34,5 +34,13 @@ export interface Category {
 export interface AddTaskRequest {
   title: string;
   body: string;
-  categoryId: number;
+  categoryId?: number;
+}
+
+export interface UpdateTaskRequest {
+  id: number;
+  title: string;
+  body: string;
+  state: number;
+  categoryId?: number;
 }

@@ -51,8 +51,8 @@ export class TaskAddFormComponent implements OnInit {
       this.errorMessage.set(null);
       const payload: AddTaskRequest = {
         title: this.form.value.title!,
-        body: this.form.value.body!,
-        categoryId: Number(this.form.value.categoryId!),
+        body: this.form.value.body || '',
+        categoryId: this.form.value.categoryId!,
       };
       this.taskService
         .add(payload)
@@ -67,6 +67,7 @@ export class TaskAddFormComponent implements OnInit {
           error: (error) => {
             this.errorMessage.set(error.message || 'An unxpected error has occured. ');
             alert(this.errorMessage());
+            this.isLoading.set(false);
           },
           complete: () => {
             this.isLoading.set(false);
