@@ -52,7 +52,7 @@ export class TaskService {
   }
 
   add(task: AddTaskRequest): Observable<TaskListItem> {
-    return this.http.post<TaskListItem>(this.url + 'task', task).pipe(
+    return this.http.post<TaskListItem>(this.url, task).pipe(
       tap((taskItem: TaskListItem) => {
         this._allTasks.update((tasks) => [...tasks, taskItem]);
       }),
